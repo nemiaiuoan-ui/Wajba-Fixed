@@ -75,7 +75,7 @@ class WajbaTheme {
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     ),
-    cardTheme: const CardThemeData(
+    cardTheme: CardThemeData(
       color: WajbaColors.cardBg,
       elevation: 2,
       shadowColor: WajbaColors.shadow,
