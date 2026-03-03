@@ -38,6 +38,7 @@ jobs:
         continue-on-error: true
 
       - name: 🏗️ Build APK Debug
+      - run: flutter clean
         run: flutter build apk --debug --no-tree-shake-icons
 
       - name: 📤 Upload APK
