@@ -1,52 +1,43 @@
-name: 🚀 Build Wajba APK
+name: Build APK
 
 on:
   push:
-    branches: [ main, master ]
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
-  build-apk:
-    name: Build Flutter APK
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: ☕ Setup Java 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
-      - name: 🐦 Setup Flutter (latest stable)
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-          cache: true
+          flutter-version: 3.41.3
 
-      - name: 🔑 Create google-services.json
-        run: |
-          echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
-
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: 🔍 Analyze (non-bloquant)
+      - name: Analyze (allow warnings)
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
-        continue-on-error: true
 
-      - name: 🏗️ Build APK Debug
-      - run: flutter clean
+      - name: Clean project
+        run: flutter clean
+
+      - name: Build APK
         run: flutter build apk --debug --no-tree-shake-icons
 
-      - name: 📤 Upload APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: wajba-client-debug-apk
+          name: app-debug
           path: build/app/outputs/flutter-apk/app-debug.apk
-          retention-days: 30
-
-      - name: ✅ Done
-        run: echo "APK disponible dans Artifacts !"
