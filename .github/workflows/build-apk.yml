@@ -4,16 +4,18 @@ on:
   push:
     branches:
       - main
+      - safe-backup
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Java 17
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -22,21 +24,12 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
-
-      - name: Flutter Doctor
-        run: flutter doctor -v
-
-      - name: Clean project
-        run: |
-          flutter clean
-          rm -rf ~/.gradle/caches/
-          rm -rf ~/.gradle/wrapper/
+          flutter-version: 3.41.3
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK (debug)
+      - name: Build Debug APK
         run: flutter build apk --debug
 
       - name: Upload APK
