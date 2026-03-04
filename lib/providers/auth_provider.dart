@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/models.dart';
 
 const bool kTestMode = true;
-const String kTestOtpCode = '123456';
 
 class AuthProvider extends ChangeNotifier {
   final _auth = FirebaseAuth.instance;
