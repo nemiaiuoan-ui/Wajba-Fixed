@@ -82,21 +82,11 @@ class AuthProvider extends ChangeNotifier {
   // ── ÉTAPE 2 : Vérifier OTP ─────────────────────────────────────
   Future<bool> verifyOtp(String smsCode) async {
     if (kTestMode) {
-    if (smsCode == kTestOtpCode) {
-      notifyListeners();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-    if (kTestMode) {
       if (smsCode == kTestOtpCode) {
-        _isAuthenticated = true;
         notifyListeners();
-        return;
+        return true;
       } else {
-        throw Exception('Invalid OTP');
+        return false;
       }
     }
 
@@ -114,7 +104,6 @@ class AuthProvider extends ChangeNotifier {
       return false;
     }
   }
-
   // ── ÉTAPE 3 : Compléter le profil ─────────────────────────────
   Future<bool> completeProfile({
     required String name,
