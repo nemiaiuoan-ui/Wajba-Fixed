@@ -1,3 +1,9 @@
+const bool kTestMode = true;
+const String kTestOtpCode = '123456';
+
+const bool kTestMode = true;
+const String kTestOtpCode = '123456';
+
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -76,6 +82,16 @@ class AuthProvider extends ChangeNotifier {
 
   // ── ÉTAPE 2 : Vérifier OTP ─────────────────────────────────────
   Future<bool> verifyOtp(String smsCode) async {
+    if (kTestMode) {
+      if (smsCode == kTestOtpCode) {
+        _isAuthenticated = true;
+        notifyListeners();
+        return;
+      } else {
+        throw Exception('Invalid OTP');
+      }
+    }
+
     _setLoading(true);
     try {
       final cred = PhoneAuthProvider.credential(
